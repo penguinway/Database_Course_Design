@@ -1,0 +1,11 @@
+<h1>岗位列表</h1>
+<ul>
+    {% for position in positions %}
+        <li>
+{#            <!-- Link to the position's detail page -->#}
+            <a href="{% url 'position_detail' position.position_id %}">
+                {{ position.name }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

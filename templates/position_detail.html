@@ -1,0 +1,13 @@
+<h1>{{ position.position_id }} - {{ position.name }}</h1>
+<p>岗位职责: 
+    {{ position.responsibilities }}
+</p>
+<p>岗位要求: 
+    {{ position.description }}
+</p>
+
+<form action="{% url 'delete_position' position.position_id %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('确定要删除此岗位吗？')">删除岗位</button>
+</form>
+

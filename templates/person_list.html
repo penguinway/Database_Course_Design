@@ -1,0 +1,17 @@
+<h1>人员列表</h1>
+<ul>
+    {% for person in persons %}
+        <li>
+{#            <!-- Link to the person's detail page -->#}
+            <a href="{% url 'person_detail' person.employee_id %}">
+                {{ person.name }}
+            </a>
+{#            <!-- Display position or default text -->#}
+            {% if person.position.all %}
+                {{ person.position.all|join:", " }}
+            {% else %}
+                (未分配岗位)
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

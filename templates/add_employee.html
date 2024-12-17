@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta charset="UTF-8">
+<head>
+    <title>添加人员</title>
+</head>
+<body>
+    <h1>添加人员</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- 将表单渲染为段落 -->
+        {{ form. }}
+        <button type="submit">提交</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<h1>{{ person.employee_id }} - {{ person.name }}</h1>
+<p>岗位: 
+    {% if person.position.all %}
+        {{ person.position.all|join:", " }}
+    {% else %}
+        未分配岗位
+    {% endif %}
+</p>
+<p>性别: {{ person.gender }}</p>
+<p>年龄: {{ person.age }}</p>
+<p>电话: {{ person.Contact }}</p>
+<p>邮箱: {{ person.email }}</p>
+<p>入职日期: {{ person.Creation_date }}</p>
+<p>出生日期: {{ person.date_of_birth }}</p>
+<p>身份证件号码: {{ person.ID_number }}</p>
+
+<h2>教育经历</h2>
+<ul>
+    {% for edu in person.educations.all %}
+        <li>学位: {{ edu.degree }} 就读于 {{ edu.institution }} - {{ edu.major }}</li>
+    {% endfor %}
+</ul>
+
+<h2>工作经历</h2>
+<ul>
+    <!-- Loop through employment experiences -->
+    {% if person.experience.all %}
+    {% for exp in person.experience.all %}
+        <li>于 {{ exp.start_date }} - {{ exp.end_date }} 工作于 {{ exp.company_name }} {{ exp.position }} 岗</li>
+    {% endfor %}
+    {% else %}
+    <li>无工作经历</li>
+    {% endif %}
+</ul>
+
+<form action="{% url 'delete_employee' person.employee_id %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('确定要删除此员工吗？')">删除员工</button>
+</form>
+
