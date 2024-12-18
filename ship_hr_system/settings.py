@@ -25,7 +25,9 @@ SECRET_KEY = "django-insecure-xo(vjbgaqgsfr1hkuh0)n@k7hzd%w=(7nl)yysrjlp^wbxza5j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+]
 
 
 # Application definition
@@ -38,7 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "hr_system.apps.HrSystemConfig",
-    "rest_framework"
+    "rest_framework",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -49,6 +52,12 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware"
+]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
 ]
 
 ROOT_URLCONF = "ship_hr_system.urls"
@@ -58,7 +67,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / 'templates']
         ,
-        "APP_DIRS": True,
+        "APP_DIRS": False,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -81,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # 使用 MySQL 数据库
         'NAME': 'ship_hr_system',         # 数据库名称
         'USER': 'root',              # 数据库用户名
-        'PASSWORD': 'YT512loveelysia',          # 数据库密码
+        'PASSWORD': '******',          # 数据库密码
         'HOST': 'localhost',                  # 数据库主机地址，通常是 localhost
         'PORT': '3306',                       # MySQL 端口，默认是 3306
         'OPTIONS': {
@@ -125,7 +134,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
@@ -24,8 +24,8 @@ urlpatterns = [
     path('api/positions/delete/', views.delete_position_api, name='delete_position_api'),
     path('api/persons/change/', views.change_employee_api, name='change_employee_api'),
     path('api/positions/change/', views.change_position_api, name='change_position_api'),
-    path('api/education/change', views.change_education_api, name='change_education_api'),
-    path('api/experience/change', views.change_experience_api, name='change_experience_api'),
+    path('api/education/change/', views.change_education_api, name='change_education_api'),
+    path('api/experience/change/', views.change_experience_api, name='change_experience_api'),
     path('api/persons/education/add/', views.add_education_api, name='add_education_api'),
     path('api/persons/experience/add/', views.add_experience_api, name='add_experience_api'),
     path('api/persons/education/detail/', views.get_employee_education_detail_api, name='get_employee_education_detail_api'),
@@ -33,4 +33,6 @@ urlpatterns = [
     path('api/persons/education/delete/', views.delete_education_api, name='delete_education_api'),
     path('api/persons/experience/delete/', views.delete_experience_api, name='delete_experience_api'),
     path('api/persons/positions/change/', views.change_employee_position_api, name='change_employee_position_api'),
+
+    re_path(r'^.*$', views.handler404, name='handler404'),
 ]

@@ -175,7 +175,7 @@ def add_position_api(request):
     serializer = PositionSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data, status=201)
+        return Response(serializer.data, status=200)
     return Response(serializer.errors, status=400)
 
 
@@ -370,7 +370,7 @@ def remove_employee_position(employee_id, position_id):
 @api_view(['POST'])
 def change_employee_position_api(request):
     """修改员工岗位"""
-    employee_id = request.data.get('person_id')
+    employee_id = request.data.get('employee_id')
     position_id = request.data.get('position_id')
     change = request.data.get('action')
     if employee_id is None or position_id is None:
@@ -389,3 +389,13 @@ def change_employee_position_api(request):
     elif change.lower() == 'remove':
         remove_employee_position(employee_id, position_id)
     return Response({'message': 'Employee position changed successfully'}, status=200)
+
+
+def serve_react_app(request):
+    return render(request, 'index.html')
+
+
+# 在views.py中定义handler404视图
+@api_view(['GET', 'POST'])
+def handler404(request):
+    return Response({"error": "Not Found"}, status=404)
