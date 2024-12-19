@@ -46,6 +46,7 @@ const items = [
     children: [
       { key: 'add-education', label: <Link to="/education-management/add-education">添加教育经历</Link> },
       { key: 'edit-education', label: <Link to="/education-management/edit-education">修改教育经历</Link> },
+      { key: 'delete-education', label: <Link to="/education-management/delete-education">删除教育经历</Link> },
     ],
   },
   {
@@ -55,6 +56,7 @@ const items = [
     children: [
       { key: 'add-experience', label: <Link to="/experience-management/add-experience">添加工作经历</Link> },
       { key: 'edit-experience', label: <Link to="/experience-management/edit-experience">修改工作经历</Link> },
+      { key: 'delete-experience', label: <Link to="/experience-management/delete-experience">删除工作经历</Link> },
     ],
   },
   {

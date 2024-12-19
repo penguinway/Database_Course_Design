@@ -61,7 +61,7 @@ const AddExprience: React.FC = () => {
     setLoading(true);
 
     try {
-      await axios.post('http://localhost:8000/api/persons/education/add/', payload);
+      await axios.post('http://localhost:8000/api/persons/experience/add/', payload);
       message.success('工作经历添加成功');
     } catch (err) {
       console.error('Error adding education:', err);

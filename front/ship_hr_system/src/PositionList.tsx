@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Space, Button, Result } from 'antd';
+import { Table, Space, Button, Result, message, Modal, Typography } from 'antd';
 import axios from 'axios'; // 引入 axios
 import { Link } from 'react-router-dom';
+
+const { Text } = Typography;
 
 interface Position {
   position_id: number;
@@ -14,6 +16,31 @@ const PositionList: React.FC = () => {
   const [positions, setPositions] = useState<Position[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = (position_id: number) => {
+    handleDelete(position_id);
+    setIsModalOpen(false);
+    message.success('删除岗位成功');
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = async (position_id: number) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/positions/delete/?position_id=${position_id}`);
+      setPositions(positions.filter((position) => position.position_id !== position_id));
+    } catch (error) {
+      console.error('Error deleting data:', error);
+      setError('删除人员失败');
+    }
+  };
 
   // 使用 axios 获取职位列表
   useEffect(() => {
@@ -60,9 +87,23 @@ const PositionList: React.FC = () => {
       key: 'action',
       render: (_: any, record: Position) => (
         <Space size="middle">
-          <Button type="link">
+          <Button type="primary">
             <Link to={`/position-records/edit-position/${record.position_id}`}>编辑</Link>
           </Button>
+        </Space>
+      ),
+    },
+    {
+      title: '删除',
+      key: 'delete',
+      render: (_: any, record: Position) => (
+        <Space size="middle">
+          <Button type="primary" onClick={showModal}>
+              删除
+            </Button>
+            <Modal title="删除确认" open={isModalOpen} onOk={() => handleOk(record.position_id)} onCancel={handleCancel}>
+              <Text> 是否确定删除该岗位？ </Text>
+            </Modal>
         </Space>
       ),
     },

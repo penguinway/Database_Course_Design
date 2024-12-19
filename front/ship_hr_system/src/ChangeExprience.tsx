@@ -12,7 +12,7 @@ interface Person {
     gender: string;
 }
 
-interface Education {
+interface Experience {
     experience_id: number;
     company_name: string;
     position: string;
@@ -23,7 +23,7 @@ interface Education {
 const ChangeExperience: React.FC = () => {
     const [persons, setPersons] = useState<Person[]>([]);
     const [selectedPersonId, setSelectedPersonId] = useState<number | null>(null);
-    const [experience, setExperience] = useState<Education[]>([]);
+    const [experience, setExperience] = useState<Experience[]>([]);
     const [selectedExperienceId, setSelectedExperienceId] = useState<number | null>(null);
     const [loadingPersons, setLoadingPersons] = useState<boolean>(true);
     const [loadingExperience, setLoadingExperience] = useState<boolean>(false);
@@ -107,7 +107,7 @@ const ChangeExperience: React.FC = () => {
           >
             {persons.map((person) => (
               <Option key={person.employee_id} value={person.employee_id}>
-                {person.name} ({person.gender}, {person.age}岁)
+                ID:{person.employee_id} - 姓名:{person.name}
               </Option>
             ))}
           </Select>
@@ -127,7 +127,7 @@ const ChangeExperience: React.FC = () => {
             >
               {experience.map((exp) => (
                 <Option key={exp.experience_id} value={exp.experience_id}>
-                  {exp.company_name} ({exp.position})
+                  {exp.company_name} ({exp.position}), {dayjs(exp.start_date).format('YYYY-MM')} 至 {dayjs(exp.end_date).format('YYYY-MM')}
                 </Option>
               ))}
             </Select>

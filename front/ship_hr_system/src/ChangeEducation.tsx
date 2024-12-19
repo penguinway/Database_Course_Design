@@ -109,7 +109,7 @@ const ChangeEducation: React.FC = () => {
           >
             {persons.map((person) => (
               <Option key={person.employee_id} value={person.employee_id}>
-                {person.name} ({person.gender}, {person.age}岁)
+                ID:{person.employee_id} - 姓名:{person.name}
               </Option>
             ))}
           </Select>

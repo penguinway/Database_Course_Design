@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -26,9 +26,8 @@ SECRET_KEY = "django-insecure-xo(vjbgaqgsfr1hkuh0)n@k7hzd%w=(7nl)yysrjlp^wbxza5j
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "localhost",
+    "*",
 ]
-
 
 # Application definition
 
@@ -67,7 +66,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / 'templates']
         ,
-        "APP_DIRS": False,
+        "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -81,25 +80,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "ship_hr_system.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 使用 MySQL 数据库
-        'NAME': 'ship_hr_system',         # 数据库名称
-        'USER': 'root',              # 数据库用户名
-        'PASSWORD': '******',          # 数据库密码
-        'HOST': 'localhost',                  # 数据库主机地址，通常是 localhost
-        'PORT': '3306',                       # MySQL 端口，默认是 3306
+        'NAME': 'ship_hr_system',  # 数据库名称
+        'USER': 'ship_admin',  # 数据库用户名
+        'PASSWORD': '123456',  # 数据库密码
+        'HOST': 'localhost',  # 数据库主机地址，通常是 localhost
+        'PORT': '3306',  # MySQL 端口，默认是 3306
         'OPTIONS': {
-            'charset': 'utf8mb4',             # 设置字符集
+            'charset': 'utf8mb4',  # 设置字符集
         },
     }
 }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -119,7 +115,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -130,11 +125,14 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR / 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'dist'),
+    # 其他静态文件目录...
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

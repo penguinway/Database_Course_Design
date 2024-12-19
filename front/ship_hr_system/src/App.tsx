@@ -16,8 +16,8 @@ import AddExprience from './AddExprience';
 import ChangeEducation from './ChangeEducation';
 import ChangeExprience from './ChangeExprience';
 import PersonPosition from './PersonPosition';
-// import EmployeeManagement from './EmployeeManagement'; // 假设的员工管理页面
-// 其他页面的导入
+import DeleteEducation from './DeleteEducation';
+import DeleteExperience from './DeleteExperience';
 
 const App: React.FC = () => {
   return (
@@ -45,6 +45,8 @@ const App: React.FC = () => {
           <Route path="education-management/edit-education" element={<ChangeEducation />} />
           <Route path="experience-management/edit-experience" element={<ChangeExprience />} />
           <Route path="person-position-management" element={<PersonPosition />} />
+          <Route path="education-management/delete-education" element={<DeleteEducation />} />
+          <Route path="experience-management/delete-experience" element={<DeleteExperience />} />
           <Route path="*" element={<Error />} />
           {/* 其他子路由 */}
         </Route>

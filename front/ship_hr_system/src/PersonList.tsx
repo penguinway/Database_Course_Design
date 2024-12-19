@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Space, Button, Result } from 'antd';
+import { Table, Space, Button, Result, Modal, Typography, message } from 'antd';
 import { Link } from 'react-router-dom';
 import axios from 'axios'; // 引入 axios
+
+const { Text } = Typography;
 
 interface Person {
   employee_id: number;
@@ -19,6 +21,31 @@ const PersonList: React.FC = () => {
   const [persons, setPersons] = useState<Person[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = (employee_id: number) => {
+    handleDelete(employee_id);
+    setIsModalOpen(false);
+    message.success('办理离职成功');
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = async (employee_id: number) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/persons/delete/?person_id=${employee_id}`);
+      setPersons(persons.filter((person) => person.employee_id !== employee_id));
+    } catch (error) {
+      console.error('Error deleting data:', error);
+      setError('删除人员失败');
+    }
+  };
 
   // 使用 axios 获取人员列表
   useEffect(() => {
@@ -74,9 +101,11 @@ const PersonList: React.FC = () => {
       key: 'action',
       render: (_: any, record: Person) => (
         <Space size="middle">
+          <Link to={`/employee-management/edit-employee/${record.employee_id}`}>
           <Button type="primary">
-            <Link to={`/employee-management/edit-employee/${record.employee_id}`}>编辑</Link>
+            编辑
           </Button>
+          </Link>
         </Space>
       ),
     },
@@ -85,9 +114,25 @@ const PersonList: React.FC = () => {
         key: 'detail',
         render: (_: any, record: Person) => (
           <Space size="middle">
+            <Link to={`/employee-management/employee-detail/${record.employee_id}`}>
             <Button type="primary">
-              <Link to={`/employee-management/employee-detail/${record.employee_id}`}>详情</Link>
+              详情
             </Button>
+            </Link>
+          </Space>
+        ),
+      },
+      {
+        title: '离职',
+        key: 'leave',
+        render: (_: any, record: Person) => (
+          <Space size="middle">
+            <Button type="primary" onClick={showModal}>
+              办理离职
+            </Button>
+            <Modal title="离职确认" open={isModalOpen} onOk={() => handleOk(record.employee_id)} onCancel={handleCancel}>
+              <Text> 是否确定为该人员办理离职？ </Text>
+            </Modal>
           </Space>
         ),
       },
