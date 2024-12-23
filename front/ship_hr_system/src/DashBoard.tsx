@@ -19,10 +19,14 @@ const Dashboard: React.FC = () => {
         const personsResponse = await axios.get('http://localhost:8000/api/persons/');
         const positionsResponse = await axios.get('http://localhost:8000/api/positions/');
         setPersonCount(personsResponse.data.length); // 总人数
-        const positionsCount = positionsResponse.data.map((position: any) => ({
-          type: position.name,
-          value: personsResponse.data.filter((person: any) => person.position.includes(position.position_id)).length,
-        }));
+        const positionsCount = positionsResponse.data.map((position: any) => {
+          // 根据岗位名称获取岗位数量
+          const count = personsResponse.data.filter((person: any) => person.position.includes(position.position_id)).length;
+          return {
+            type: position.name, // 确保是中文名称
+            value: count,
+          };
+        });
         setPositionData(positionsCount);
       } catch (error) {
         console.error('无法加载数据', error);
@@ -35,6 +39,12 @@ const Dashboard: React.FC = () => {
     navigate('/employee-management/all-employees'); // 跳转到员工管理页面
   };
 
+  // 定义数据类型
+  interface PieData {
+    type: string;
+    value: number;
+  }
+
   // 饼图配置（岗位分布）
   const pieConfig = {
     appendPadding: 10,
@@ -45,7 +55,7 @@ const Dashboard: React.FC = () => {
     label: {
       type: 'inner',
       offset: '-30%',
-      content: '{value}',
+      content: (data: PieData) => `${data.type}: ${data.value}`, // 确保显示岗位名称和数量
       style: { textAlign: 'center', fontSize: 14 },
     },
     interactions: [{ type: 'element-active' }],
@@ -80,7 +90,7 @@ const Dashboard: React.FC = () => {
         >
           <Row justify="center" align="middle" style={{ height: '100%' }}>
             <Col span={12} style={{ textAlign: 'center' }}>
-            <Image src="https://image.penguinway.space/i/2024/06/15/666d97e35f08f.png" preview={false} width={200} />
+              <Image src="https://image.penguinway.space/i/2024/06/15/666d97e35f08f.png" preview={false} width={200} />
               <Title level={2}>欢迎使用船舶人力资源管理系统</Title>
               <p>系统提供员工管理、岗位管理、信息管理等功能，帮助您更好地管理船舶人员。</p>
               <Button type="primary" size="large" onClick={handlePersonPage}>

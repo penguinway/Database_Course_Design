@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Select, Button, Descriptions, message } from 'antd';
+import { Select, Button, Descriptions, message, Result } from 'antd';
 import axios from 'axios';
 
 const { Option } = Select;
@@ -11,6 +11,8 @@ const PersonPosition: React.FC = () => {
   const [currentPersonPositions, setCurrentPersonPositions] = useState<any[]>([]); // 当前人员的岗位
   const [selectedPerson, setSelectedPerson] = useState<number | null>(null); // 选择的人员
   const [selectedPosition, setSelectedPosition] = useState<number | null>(null); // 选择的岗位
+  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // 获取所有人员和岗位
@@ -22,6 +24,7 @@ const PersonPosition: React.FC = () => {
         setPositions(positionsResponse.data);
       } catch (error) {
         message.error('无法加载人员或岗位信息');
+        setError('无法加载人员或岗位信息');
       }
     };
     fetchPersonsAndPositions();
@@ -37,6 +40,7 @@ const PersonPosition: React.FC = () => {
           setCurrentPersonPositions(response.data.position);
         } catch (error) {
           message.error('无法加载该人员的岗位信息');
+          setError('无法加载该人员的岗位信息');
         }
       } else {
         setCurrentPersonPositions([]);
@@ -62,9 +66,24 @@ const PersonPosition: React.FC = () => {
             message.success('岗位解除成功');
         }
     } catch (error) {
-      message.error('操作失败');
+      message.error(`操作失败, ${error}`);
+      setError('操作失败');
+    } finally {
+      setSuccess(true);
     }
   };
+
+  if (success && !error) {
+    return (
+      <div>
+        <Result
+        status="success"
+        title={success ? "执行成功" : "执行失败"}
+        subTitle="您已成功执行了操作"
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

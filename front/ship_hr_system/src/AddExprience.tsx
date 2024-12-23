@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Select, Form, Input, DatePicker, Button, Card, message, Spin } from 'antd';
+import { Select, Form, Input, DatePicker, Button, Card, message, Spin, Result, Typography, Space } from 'antd';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom'
 
+const { Text } = Typography;
 const { Option } = Select;
 
 interface Person {
@@ -22,6 +24,9 @@ const AddExprience: React.FC = () => {
   const [selectedPersonId, setSelectedPersonId] = useState<number | null>(null);
   const [loadingPersons, setLoadingPersons] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const navigator = useNavigate();
 
   useEffect(() => {
     // Fetch the list of persons on component mount
@@ -32,6 +37,7 @@ const AddExprience: React.FC = () => {
       } catch (err) {
         console.error('Error fetching persons:', err);
         message.error('无法加载人员信息');
+        setError('无法加载人员信息');
       } finally {
         setLoadingPersons(false);
       }
@@ -66,10 +72,40 @@ const AddExprience: React.FC = () => {
     } catch (err) {
       console.error('Error adding education:', err);
       message.error('添加工作经历失败');
+      setError('添加工作经历失败');
     } finally {
       setLoading(false);
+      setSuccess(true);
     }
   };
+
+  const handleReload = () => {
+    setSelectedPersonId(null);
+    setSuccess(false);
+    setError(null);
+  };
+
+  const handleBackHomePage = () => {
+    navigator(`/`);
+  };
+
+  if (success && !error) {
+        return (
+          <div>
+            <Result
+            status="success"
+            title={success ? "添加成功" : "添加失败"}
+            subTitle="您已成功添加了工作经历"
+            extra = {
+              <Space size="middle">
+                <Button type="primary" onClick={handleReload}> <Text>继续</Text> </Button>
+                <Button type="primary" onClick={handleBackHomePage}> <Text>返回首页</Text> </Button>
+              </Space>
+            }
+            />
+          </div>
+        );
+      }
 
   return (
     <div>

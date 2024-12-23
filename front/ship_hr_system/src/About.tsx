@@ -37,14 +37,14 @@ const AboutPage: React.FC = () => {
               <Button
                 type="link"
                 icon={<MailOutlined />}
-                onClick={() => window.location.href = 'mailto:contact@shiphr.com'}
+                onClick={() => window.location.href = 'mailto:penguinway@hrbeu.edu.cn'}
               >
                 发送邮件
               </Button>
               <Button
                 type="link"
                 icon={<GithubOutlined />}
-                onClick={() => window.location.href = 'https://github.com/your-repo'}
+                onClick={() => window.location.href = 'https://github.com/penguinway/Database_Course_Design'}
               >
                 查看代码
               </Button>

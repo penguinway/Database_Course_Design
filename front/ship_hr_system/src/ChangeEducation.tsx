@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Select, Form, Input, DatePicker, Button, Card, message, Spin } from 'antd';
+import { Select, Form, Input, DatePicker, Button, Card, message, Spin, Result, Space, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
+const { Text } = Typography;
 
 interface Person {
   employee_id: number;
@@ -29,6 +31,9 @@ const ChangeEducation: React.FC = () => {
   const [loadingPersons, setLoadingPersons] = useState<boolean>(true);
   const [loadingEducation, setLoadingEducation] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const navigator = useNavigate();
 
   useEffect(() => {
     // Fetch persons list on component mount
@@ -39,6 +44,7 @@ const ChangeEducation: React.FC = () => {
       } catch (err) {
         console.error('Error fetching persons:', err);
         message.error('无法加载人员信息');
+        setError('无法加载人员信息');
       } finally {
         setLoadingPersons(false);
       }
@@ -59,6 +65,7 @@ const ChangeEducation: React.FC = () => {
       } catch (err) {
         console.error('Error fetching educations:', err);
         message.error('无法加载教育经历');
+        setError('无法加载教育经历');
       } finally {
         setLoadingEducation(false);
       }
@@ -90,10 +97,41 @@ const ChangeEducation: React.FC = () => {
     } catch (err) {
       console.error('Error changing education:', err);
       message.error('修改教育经历失败');
+      setError('修改教育经历失败');
     } finally {
       setLoading(false);
+      setSuccess(true);
     }
   };
+
+  const handleReload = () => {
+    setSelectedPersonId(null);
+    setSelectedEducationId(null);
+    setSuccess(false);
+    setError(null);
+  };
+
+  const handleBackHomePage = () => {
+    navigator(`/`);
+  };
+
+  if (success && !error) {
+    return (
+      <div>
+        <Result
+        status="success"
+        title={success ? "修改成功" : "修改失败"}
+        subTitle="您已成功修改了教育经历"
+        extra={
+          <Space size="middle">
+            <Button type="primary" onClick={handleReload}> <Text>继续</Text> </Button>
+            <Button type="primary" onClick={handleBackHomePage}> <Text>返回首页</Text> </Button>
+          </Space>
+        }
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

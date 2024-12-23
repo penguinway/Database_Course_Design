@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, Result } from 'antd';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -8,7 +8,9 @@ const { TextArea } = Input;
 const ChangePersonDetail: React.FC = () => {
     const [form] = Form.useForm();
     const { positionId } = useParams(); // 获取路径中的 employee_id
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [success, setSuccess] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,6 +29,7 @@ const ChangePersonDetail: React.FC = () => {
         });
       } catch (error) {
         message.error('无法加载岗位信息');
+        setError('无法加载岗位信息');
       }
     };
 
@@ -50,10 +53,24 @@ const ChangePersonDetail: React.FC = () => {
       navigate(`/position-records/all-position`); // 更新后跳转到人员详情页
     } catch (error) {
       message.error('更新失败，请稍后再试');
+      setError("岗位更新失败");
     } finally {
       setLoading(false);
+      setSuccess(true);
     }
   };
+
+  if (success && !error) {
+    return (
+      <div>
+        <Result
+        status="success"
+        title={success ? "修改成功" : "修改失败"}
+        subTitle="您已成功修改了岗位信息"
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

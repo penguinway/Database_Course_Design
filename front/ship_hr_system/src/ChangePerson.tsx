@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, DatePicker, Select, message } from 'antd';
+import { Form, Input, Button, DatePicker, Select, message, Result } from 'antd';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -9,7 +9,9 @@ const { Option } = Select;
 const ChangePersonDetail: React.FC = () => {
   const [form] = Form.useForm();
   const { employeeId } = useParams(); // 获取路径中的 employee_id
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +21,6 @@ const ChangePersonDetail: React.FC = () => {
       try {
         const response = await axios.get(`http://localhost:8000/api/persons/detail/?person_id=${employeeId}`);
         const personData = response.data;
-        console.log(personData);
         // 填充表单数据
         form.setFieldsValue({
           name: personData.name,
@@ -31,6 +32,7 @@ const ChangePersonDetail: React.FC = () => {
         });
       } catch (error) {
         message.error('无法加载员工信息');
+        setError("无法加载员工信息");
       }
     };
 
@@ -46,6 +48,7 @@ const ChangePersonDetail: React.FC = () => {
     const data = {
       ...values,
       date_of_birth: values.date_of_birth.format('YYYY-MM-DD'), // 格式化日期
+      person_id: employeeId,
     };
 
     try {
@@ -54,10 +57,24 @@ const ChangePersonDetail: React.FC = () => {
       navigate(`/employee-management/employee-detail/${response.data.employee_id}`); // 更新后跳转到人员详情页
     } catch (error) {
       message.error('更新失败，请稍后再试');
+      setError("人员更新失败");
     } finally {
       setLoading(false);
+      setSuccess(true);
     }
   };
+
+  if (success && !error) {
+    return (
+      <div>
+        <Result
+        status="success"
+        title={success ? "修改成功" : "修改失败"}
+        subTitle="您已成功修改了人员信息"
+        />
+      </div>
+    );
+  }
 
   return (
     <div>
