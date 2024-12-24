@@ -1,8 +1,8 @@
 # 船舶人力资源管理系统
 
 哈尔滨工程大学软件工程综合课程设计作品
+<br />
 [![MIT License][license-shield]][license-url]
-
 <p align="center">
   <a href="https://github.com/penguinway/Database_Course_Design/">
     <img src="https://image.penguinway.space/i/2024/06/15/666d97e35f08f.png" alt="Logo" width="160" height="160">
@@ -16,6 +16,7 @@
     ·
     <a href="https://github.com/penguinway/Database_Course_Design/issues">提出新特性</a>
   </p>
+</p>
 ## 目录
 
 - [上手指南](#上手指南)
