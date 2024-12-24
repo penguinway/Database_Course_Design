@@ -1,0 +1,60 @@
+name: ship_hr_system
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_DATABASE: "ship_hr_system"
+      MYSQL_USER: "shipship"
+      MYSQL_PASSWORD: "12345678"
+    ports:
+      - "3306:3306"
+    networks:
+      - app_network
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ../mysql/:/docker-entrypoint-initdb.d/
+
+  web:
+    build: ../
+    container_name: django_web
+    restart: always
+    volumes:
+      - ../:/app  # 映射到 Django 项目
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - DB_HOST=mysql_db
+      - DB_NAME=ship_hr_system
+      - DB_USER=shipship
+      - DB_PASSWORD=12345678
+    depends_on:
+      - db
+    networks:
+      - app_network
+  
+  # Nginx 服务
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ../front/ship_hr_system/dist:/usr/share/nginx/html  # 静态 HTML 文件目录
+    ports:
+      - "8090:80"  # 映射 80 端口到宿主机
+    depends_on:
+      - web
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
