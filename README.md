@@ -14,10 +14,12 @@
     ·
     <a href="https://github.com/penguinway/Database_Course_Design/issues">报告Bug</a>
     ·
-    <a href="https://github.com/penguinway/Database_Course_Design/issues">提出新特</a>
+    <a href="https://github.com/penguinway/Database_Course_Design/issues">提出新特性</a>
   </p>
 </p>
+
 <br />
+
 ## 目录
 
 - [上手指南](#上手指南)
