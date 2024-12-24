@@ -83,17 +83,28 @@ WSGI_APPLICATION = "ship_hr_system.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',  # 使用 MySQL 数据库
+#         'NAME': 'ship_hr_system',  # 数据库名称
+#         'USER': 'ship_admin',  # 数据库用户名
+#         'PASSWORD': '123456',  # 数据库密码
+#         'HOST': 'localhost',  # 数据库主机地址，通常是 localhost
+#         'PORT': '3306',  # MySQL 端口，默认是 3306
+#         'OPTIONS': {
+#             'charset': 'utf8mb4',  # 设置字符集
+#         },
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 使用 MySQL 数据库
-        'NAME': 'ship_hr_system',  # 数据库名称
-        'USER': 'ship_admin',  # 数据库用户名
-        'PASSWORD': '123456',  # 数据库密码
-        'HOST': 'localhost',  # 数据库主机地址，通常是 localhost
-        'PORT': '3306',  # MySQL 端口，默认是 3306
-        'OPTIONS': {
-            'charset': 'utf8mb4',  # 设置字符集
-        },
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_NAME', 'ship_hr_system'),
+        'USER': os.getenv('DB_USER', 'ship_admin'),
+        'PASSWORD': os.getenv('DB_PASSWORD', '123456'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': '3306',
     }
 }
 
