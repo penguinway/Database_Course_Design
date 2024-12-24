@@ -18,6 +18,8 @@ import ChangeExprience from './ChangeExprience';
 import PersonPosition from './PersonPosition';
 import DeleteEducation from './DeleteEducation';
 import DeleteExperience from './DeleteExperience';
+// import CertificateList from './CertList';
+// import AddCertificate from './AddCert';
 
 const App: React.FC = () => {
   return (
@@ -47,6 +49,8 @@ const App: React.FC = () => {
           <Route path="person-position-management" element={<PersonPosition />} />
           <Route path="education-management/delete-education" element={<DeleteEducation />} />
           <Route path="experience-management/delete-experience" element={<DeleteExperience />} />
+          {/* <Route path="certificate-management" element={<CertificateList />} />
+          <Route path="certificate-management/add-certificate" element={<AddCertificate />} /> */}
           <Route path="*" element={<Error />} />
           {/* 其他子路由 */}
         </Route>

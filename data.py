@@ -6,6 +6,7 @@ fake = Faker('zh_CN')
 generated_ids = set()
 generated_personids = set()
 
+
 def generate_unique_18_digit_id(down: int, up: int):
     while True:
         new_id = str(random.randint(down, up))
@@ -13,12 +14,15 @@ def generate_unique_18_digit_id(down: int, up: int):
             generated_ids.add(new_id)
             return new_id
 
+
 def generate_random_personid():
     while True:
-        new_id = str(random.randint(1, 10**8))
+        new_id = str(random.randint(1, 10 ** 8))
         if new_id not in generated_personids:
             generated_personids.add(new_id)
             return new_id
+
+
 def generate_random_person():
     return {
         "employee_id": generate_random_personid(),
@@ -26,10 +30,11 @@ def generate_random_person():
         "Creation_date": fake.date_this_decade().isoformat(),
         "date_of_birth": fake.date_of_birth(minimum_age=18, maximum_age=90).isoformat(),
         "gender": random.choice(["男", "女"]),
-        "ID_number": generate_unique_18_digit_id(10**17, 10**18 - 1),  # 假设 ID_number 是类似 SSN 的格式
+        "ID_number": generate_unique_18_digit_id(10 ** 17, 10 ** 18 - 1),  # 假设 ID_number 是类似 SSN 的格式
         "Contact": fake.phone_number(),
         "email": fake.email(),
     }
+
 
 def generate_random_position():
     return {
@@ -38,6 +43,7 @@ def generate_random_position():
         "description": fake.text(max_nb_chars=200),
         "responsibilities": fake.text(max_nb_chars=300)
     }
+
 
 # 生成模拟的教育经历数据
 def generate_fake_education(person_id):
@@ -56,6 +62,7 @@ def generate_fake_education(person_id):
         "start_date": fake.date_between(start_date="-10y", end_date="-5y").isoformat(),
         "end_date": fake.date_between(start_date="-4y", end_date="today").isoformat()
     }
+
 
 # 生成模拟的工作经历数据
 def generate_fake_experience(person_id):
@@ -77,6 +84,7 @@ def generate_fake_experience(person_id):
         "end_date": fake.date_between(start_date="-4y", end_date="today").isoformat()
     }
 
+
 def set_position(person_id, position_id):
     headers = {'Content-Type': 'application/json'}
     data = {
@@ -92,13 +100,13 @@ def set_position(person_id, position_id):
 
 def batch_upload(num_records, num_positions):
     base_url = "http://localhost:8000/api"
-    
+
     headers = {'Content-Type': 'application/json'}
 
     for _ in range(num_records):
         person_data = generate_random_person()
         response = requests.post(f"{base_url}/persons/add/", json=person_data, headers=headers)
-        
+
         if response.status_code == 200:
             print(f"Successfully added: {person_data}")
         else:
@@ -110,28 +118,30 @@ def batch_upload(num_records, num_positions):
         print(f"Uploaded: {position_data}")
         print(f"Response Status Code: {response.status_code}")
         print(f"Response Body: {response.json()}\n")
-    
+
     for person_id in range(1, num_records + 1):
         education = generate_fake_education(person_id)
         response = requests.post(f"{base_url}/persons/education/add/", json=education, headers=headers)
         if response.status_code == 200:
             print(f"Education for person {person_id} added successfully.")
         else:
-            print(f"Failed to add education for person {person_id}. Status code: {response.status_code}, Response: {response.text}")
-        
+            print(
+                f"Failed to add education for person {person_id}. Status code: {response.status_code}, Response: {response.text}")
+
     for person_id in range(1, num_records + 1):
         experience = generate_fake_experience(person_id)
         response = requests.post(f"{base_url}/persons/experience/add/", json=experience, headers=headers)
         if response.status_code == 200:
             print(f"Experience for person {person_id} added successfully.")
         else:
-            print(f"Failed to add experience for person {person_id}. Status code: {response.status_code}, Response: {response.text}")
+            print(
+                f"Failed to add experience for person {person_id}. Status code: {response.status_code}, Response: {response.text}")
 
     for _ in range(num_records):
         person_id = random.randint(1, num_records)
         position_id = random.randint(1, num_positions)
         set_position(person_id, position_id)
 
+
 if __name__ == "__main__":
     batch_upload(num_records=10, num_positions=2)
-

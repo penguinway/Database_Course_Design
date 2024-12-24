@@ -399,3 +399,30 @@ def serve_react_app(request):
 @api_view(['GET', 'POST'])
 def handler404(request):
     return Response({"error": "Not Found"}, status=404)
+
+
+# @api_view(['GET'])
+# def get_all_cert_api(request):
+#     """获取所有证书记录"""
+#     certs = Cert.objects.all()
+#     serializer = CertSerializer(certs, many=True)
+#     return Response(serializer.data)
+#
+#
+# @api_view(['POST'])
+# def add_cert_api(request):
+#     """为指定员工添加证书"""
+#     person_id = request.data.get('person_id')
+#     if person_id is None:
+#         return Response({'error': 'person_id is required'}, status=400)
+#     try:
+#         person_id = int(person_id)
+#     except ValueError:
+#         return Response({'error': 'Invalid person_id'}, status=400)
+#     employee = get_object_or_404(Employee, pk=person_id)
+#     serializer = CertSerializer(data=request.data)
+#     if serializer.is_valid():
+#         serializer.save(person=employee)
+#         return Response(serializer.data, status=201)
+#     return Response(serializer.errors, status=400)
+#
