@@ -10,7 +10,6 @@ import {
   MenuUnfoldOutlined,
   BarChartOutlined,
   AuditOutlined,
-  // SafetyCertificateOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom'; // 引入 Link 组件
 import { Outlet } from 'react-router-dom'; // 用于渲染子路由

@@ -25,8 +25,3 @@ class ExperienceSerializer(serializers.ModelSerializer):
         model = Experience
         fields = ['experience_id', 'company_name', 'position', 'start_date', 'end_date']
 
-
-# class CertSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Cert
-#         fields = ['cert_id', 'name', 'issuing_organization', 'issue_date', 'expiry_date']
