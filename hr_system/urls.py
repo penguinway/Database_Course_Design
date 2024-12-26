@@ -33,8 +33,6 @@ urlpatterns = [
     path('api/persons/education/delete/', views.delete_education_api, name='delete_education_api'),
     path('api/persons/experience/delete/', views.delete_experience_api, name='delete_experience_api'),
     path('api/persons/positions/change/', views.change_employee_position_api, name='change_employee_position_api'),
-    # path('api/certs/', views.get_all_cert_api, name='get_all_cert_api'),
-    # path('api/certs/add/', views.add_cert_api, name='add_cert_api'),
 
     re_path(r'^.*$', views.handler404, name='handler404'),
 ]
